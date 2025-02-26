@@ -4,4 +4,5 @@ We’ll explore a straight forward model . No complex algorithms, just the funda
 * **[Linear Regression](Linear_regression.md)**
 
 * **[Logistic Regression](Logistic_regression.md)**
-* **[ML Terms] (Terms_reffers_in_ML.md)**
+
+* **[ML Terms](Terms_reffers_in_ML.md)**
