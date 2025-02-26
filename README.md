@@ -27,14 +27,14 @@ for i in range(data_set_count):
     is_Rain=is_Temp_greate_than_level(Temperature,32)
     training_input.append([Temperature])
     training_output.append(is_Rain)
-
+```
 To view the data set
 
 ```import pandas as pd
 df = pd.DataFrame(training_input, columns=["Temperature"])                
 df['Chance_for_Rain']=training_output
 display(df)
-
+```
 ![features](assets/ML_Features.PNG)
 
 Train the model with above data set. Here we are choosing the Logistic Regression model from sklearn library.
