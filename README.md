@@ -27,3 +27,36 @@ for i in range(data_set_count):
     is_Rain=is_Temp_greate_than_level(Temperature,32)
     training_input.append([Temperature])
     training_output.append(is_Rain)
+
+To view the data set
+
+```import pandas as pd
+df = pd.DataFrame(training_input, columns=["Temperature"])                
+df['Chance_for_Rain']=training_output
+display(df)
+
+![features](assets/ML_Features.PNG)
+
+Train the model with above data set. Here we are choosing the Logistic Regression model from sklearn library.
+
+```
+from sklearn.linear_model import LogisticRegression
+#scikit-learn, often abbreviated as sklearn, is a popular Python library for machine learning. 
+model = LogisticRegression(n_jobs=-1)
+model.fit(X=training_input, y=training_output)
+
+
+We didn’t give it specific logic or equations as input rather just values in the data set; it learned from the examples in the training data. Let’s use this model to make predictions with new input data.
+
+```input_data = [[33]]
+percentage_predicted = model.predict(X=input_data)                                     
+print("Will we get rain? " + str(percentage_predicted))
+
+Will we get rain? [ True]
+
+
+Here the out come of the prediction will be either True or False based on the input data.
+
+I would highly encourage you to try similar kind of problem to understand this model. Predicting whether a student will pass (1) or fail (0) an exam based on the number of hours they studied would be another example that you can try.
+
+All the best!.
