@@ -16,6 +16,7 @@ ML pipelines involve a series of steps to automate the machine learning workflow
     Data Splitting: Dividing the dataset into training, validation, and test sets.
     Feature Store: A centralized repository for storing and managing features.
     Hyperparameter: They are configuration variables that are set before the learning process begins, and they influence how the model learns.
+    scoring: Process of using a trained machine learning model to generate predictions on new, unseen data.
 **Model Training & Evaluation**:
 
     Model Training: The process of fitting a machine learning model to the training data.
