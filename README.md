@@ -44,7 +44,7 @@ from sklearn.linear_model import LogisticRegression
 #scikit-learn, often abbreviated as sklearn, is a popular Python library for machine learning. 
 model = LogisticRegression(n_jobs=-1)
 model.fit(X=training_input, y=training_output)
-
+```
 
 We didn’t give it specific logic or equations as input rather just values in the data set; it learned from the examples in the training data. Let’s use this model to make predictions with new input data.
 
@@ -53,7 +53,7 @@ percentage_predicted = model.predict(X=input_data)
 print("Will we get rain? " + str(percentage_predicted))
 
 Will we get rain? [ True]
-
+```
 
 Here the out come of the prediction will be either True or False based on the input data.
 
