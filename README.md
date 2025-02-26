@@ -2,4 +2,4 @@
 
 We’ll explore a straight forward model . No complex algorithms, just the fundamentals.
 
-- [Logistic Regression](Logistic regression.md)
+**[Logistic Regression](Logistic_regression.md)**
