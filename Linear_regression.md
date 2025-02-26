@@ -65,8 +65,8 @@ percentage_predicted = model.predict(X=input_data)
 print("Calculated percentage is" + str(percentage_predicted))
 ```
 
-```Calculated percentage is[60.]
-```
+`Calculated percentage is[60.]
+`
 
 Hope you could follow the steps. To get more understanding , I encourage you to experiment and try something new with this dataset. Finding the average is another example you can explore to gain a different perspective on the data.
 
