@@ -1,2 +1,3 @@
-# MLProjects
-My ML Projects
+## Machine Learning Model-Simple example
+
+![Logistic regression](assets/Capture.PNG)
