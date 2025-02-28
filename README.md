@@ -12,6 +12,10 @@ Once the program has learned from this data, it can start making predictions. Wh
 
 This is the core idea behind machine learning. By feeding computers large amounts of data, we enable them to learn patterns and make predictions, just like we do. It's about teaching computers to see the world, and understand it, through the power of data.
 
+Think of it like this: our parents were, in a way, our first "data engineers." They curated and classified the data (mangoes and balls) to make it understandable for us. Similarly, in machine learning, the process of selecting, cleaning, classifying, and preparing the data is called data engineering.
+
+The machine learning program then analyzes this carefully engineered data, searching for those same patterns we learned as children. It looks at the shapes, colors, textures, and other properties of the objects. It stores this information, essentially building its own "mental model" of what a mango and a ball look like.
+
 We’ll explore a straight forward model . No complex algorithms, just the fundamentals.
 * **[Linear Regression](Linear_regression.md)**
 
