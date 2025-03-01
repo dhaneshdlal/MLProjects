@@ -17,7 +17,7 @@ Think of it like this: our parents were, in a way, our first "data engineers." T
 The machine learning program then analyzes this carefully engineered data, searching for those same patterns we learned as children. It looks at the shapes, colors, textures, and other properties of the objects. It stores this information, essentially building its own "mental model" of what a mango and a ball look like.
 * **[ML Terms](Terms_reffers_in_ML.md)**
   
-We’ll explore a straight forward model . No complex algorithms, just the fundamentals.
+We’ll explore a straight forward model . No complex algorithms, just basic steps to start on ML.
 * **[Linear Regression](Linear_regression.md)**
 
 * **[Logistic Regression](Logistic_regression.md)**
