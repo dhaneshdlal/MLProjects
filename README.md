@@ -15,6 +15,13 @@ This is the core idea behind machine learning. By feeding computers large amount
 Think of it like this: our parents were, in a way, our first "data engineers." They curated and classified the data (mangoes and balls) to make it understandable for us. Similarly, in machine learning, the process of selecting, cleaning, classifying, and preparing the data is called data engineering.
 
 The machine learning program then analyzes this carefully engineered data, searching for those same patterns we learned as children. It looks at the shapes, colors, textures, and other properties of the objects. It stores this information, essentially building its own "mental model" of what a mango and a ball look like.
+
+Think of all the stuff you see online and in the world – that's a ton of data. But if you want to know if something is a ball or a mango, you don't need all of it. You only need the important stuff, like its shape, size, or how it feels.
+
+These important pieces of information – the things that help you guess what something is – are called features in machine learning. They're like the clues a computer uses to figure things out.
+
+And when the ML programme uses those clues to make a guess? That guess is called a prediction. So, features are the clues, and the prediction is the computer's answer after it looks at those clues.
+
 * **[ML Terms](Terms_reffers_in_ML.md)**
   
 We’ll explore a straight forward model . No complex algorithms, just basic steps to start on ML.
