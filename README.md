@@ -25,6 +25,7 @@ These important pieces of information – the things that help you guess what so
 And when the ML programme uses those clues to make a guess? That guess is called a prediction. So, features are the clues, and the prediction is the computer's answer after it looks at those clues.
 
 **Feature Engineering**
+
 Feature engineering is like being a detective and finding the best clues to solve a mystery.
 Feature engineering is the art of creating new, more useful clues (features) from your data to help your machine learning model make better predictions.
 
