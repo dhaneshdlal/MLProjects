@@ -16,7 +16,7 @@ Think of it like this: our parents were, in a way, our first "data engineers." T
 
 The machine learning program then analyzes this carefully engineered data, searching for those same patterns we learned as children. It looks at the shapes, colors, textures, and other properties of the objects. It stores this information, essentially building its own "mental model" of what a mango and a ball look like.
 
-** Features
+** Features **
 Think of all the stuff you see online and in the world – that's a ton of data. But if you want to know if something is a ball or a mango, you don't need all of it. You only need the important stuff, like its shape, size, or how it feels.
 
 These important pieces of information – the things that help you guess what something is – are called features in machine learning. They're like the clues a computer uses to figure things out.
