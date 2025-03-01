@@ -35,6 +35,9 @@ Feature engineering is the art of creating new, more useful clues (features) fro
 
 ![flow](assets/flow.PNG)
 
+
+For now just understand that feature store is a storage location where the selected features are getting stored [ will expalin the actual details later in this document]
+
 Sources and related content
 
 
