@@ -32,7 +32,9 @@ Feature engineering is the art of creating new, more useful clues (features) fro
  It's about taking raw data and turning it into something truly insightful.   
 
 **End to End Flow**
+
 ![flow](assets/flow.PNG)
+
 Sources and related content
 
 
