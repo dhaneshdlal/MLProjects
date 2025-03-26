@@ -14,7 +14,8 @@ Let’s consider a hypothetical example for the sake of understanding the logic:
 
 Lets create data set which matches the above table.
 
-```from random import randint
+```
+from random import randint
 data_set_count = 1000 # ML model requires large number of examples to learn.Hence creating 1000 rows of marks.
 random_number_max_range = 40
 training_input = list()
@@ -30,7 +31,8 @@ for i in range(data_set_count):
 ```
 To view the data set
 
-```import pandas as pd
+```
+import pandas as pd
 df = pd.DataFrame(training_input, columns=["Temperature"])                
 df['Chance_for_Rain']=training_output
 display(df)
@@ -48,7 +50,8 @@ model.fit(X=training_input, y=training_output)
 
 We didn’t give it specific logic or equations as input rather just values in the data set; it learned from the examples in the training data. Let’s use this model to make predictions with new input data.
 
-```input_data = [[33]]
+```
+input_data = [[33]]
 percentage_predicted = model.predict(X=input_data)                                     
 print("Will we get rain? " + str(percentage_predicted))
 
