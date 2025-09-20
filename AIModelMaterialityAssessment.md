@@ -194,9 +194,12 @@ G5.2. What is the fallback or contingency plan? (e.g., switching to a different 
 
 * **Model Owner:** Sarah, Product Manager for Consumer Lending.
 * **Questionnaire (Excerpt):**
-    * **Q3:** *Who is impacted by the model's predictions?* Loan applicants. An incorrect prediction could lead to financial harm (denial of a needed loan) or discrimination. The model processes data on age, zip code, and income, which could be proxies for protected characteristics.
-    * **Q5:** *What is the potential impact of an incorrect prediction?* Financial harm to applicants (denial of a loan they should have received), direct financial loss to the company (approving a bad loan), reputational damage, and legal risk (discrimination lawsuits).
-    * **Q6:** *Does the model make decisions involving protected characteristics?* Yes, indirectly through proxy data. Fairness checks are required.
+    * **Q3:** *Who is impacted by the model's predictions?*
+    *  Loan applicants. An incorrect prediction could lead to financial harm (denial of a needed loan) or discrimination. The model processes data on age, zip code, and income, which could be proxies for protected characteristics.
+    * **Q5:** *What is the potential impact of an incorrect prediction?*
+    * Financial harm to applicants (denial of a loan they should have received), direct financial loss to the company (approving a bad loan), reputational damage, and legal risk (discrimination lawsuits).
+    * **Q6:** *Does the model make decisions involving protected characteristics?*
+    * Yes, indirectly through proxy data. Fairness checks are required.
 
 ### **Phase 2: Risk Identification & Analysis**
 
