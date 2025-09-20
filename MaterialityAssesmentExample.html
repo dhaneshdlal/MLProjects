@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Model Materiality Assessment Tool</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #9b59b6;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --success: #2ecc71;
+            --info: #1abc9c;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-bottom: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin: 1.5rem 0 1rem;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        h2 i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+        
+        .card {
+            background: white;
+            padding: 1.8rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border 0.3s ease;
+        }
+        
+        input[type="text"]:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--secondary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .risk-slider {
+            margin: 1.2rem 0;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .slider-value {
+            min-width: 40px;
+            text-align: center;
+            font-weight: bold;
+            background: var(--light);
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        
+        input[type="range"] {
+            flex-grow: 1;
+            height: 10px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #ddd;
+            outline: none;
+            border-radius: 5px;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--secondary);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.4);
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-reset {
+            background: var(--dark);
+            box-shadow: 0 4px 8px rgba(44, 62, 80, 0.3);
+        }
+        
+        .btn-reset:hover {
+            background: #1e2a36;
+            box-shadow: 0 6px 12px rgba(44, 62, 80, 0.4);
+        }
+        
+        .results {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin-top: 2rem;
+            display: none;
+        }
+        
+        .risk-indicator {
+            display: inline-block;
+            padding: 0.7rem 1.5rem;
+            border-radius: 30px;
+            color: white;
+            font-weight: bold;
+            margin: 1rem 0;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .low-risk {
+            background: var(--success);
+        }
+        
+        .medium-risk {
+            background: var(--warning);
+        }
+        
+        .high-risk {
+            background: var(--danger);
+        }
+        
+        .score-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        .score-label {
+            text-align: center;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+        }
+        
+        .actions-list {
+            margin: 1.2rem 0;
+            padding-left: 1.8rem;
+        }
+        
+        .actions-list li {
+            margin-bottom: 0.8rem;
+            padding-left: 0.5rem;
+        }
+        
+        .actions-list li i {
+            color: var(--success);
+            margin-right: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 1.5rem;
+            color: var(--dark);
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .tab {
+            padding: 12px 25px;
+            cursor: pointer;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            background: white;
+            border-color: #ddd;
+            border-bottom: 2px solid white;
+            margin-bottom: -2px;
+            color: var(--secondary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .card {
+                padding: 1.2rem;
+            }
+            
+            .slider-container {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.8rem;
+            }
+            
+            .slider-value {
+                align-self: center;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                border-radius: 0;
+                margin-right: 0;
+                margin-bottom: 5px;
+                text-align: center;
+            }
+        }
+        
+        .progress-container {
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 5px;
+            color: var(--secondary);
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-weight: normal;
+            font-size: 0.9rem;
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI Model Materiality Assessment Tool</h1>
+            <p class="subtitle">Evaluate the materiality and risk of your AI models</p>
+        </header>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="predictive">Predictive AI Assessment</div>
+            <div class="tab" data-tab="generative">Generative AI Assessment</div>
+        </div>
+        
+        <div class="tab-content active" id="predictive-tab">
+            <div class="card">
+                <h2><i class="fas fa-info-circle"></i> About This Assessment</h2>
+                <p>This tool helps you evaluate the materiality of your predictive AI model by assessing its potential impacts, risks, and significance. Complete the form below to calculate risk levels and receive recommendations.</p>
+                <p>Materiality in AI refers to the threshold of significance used to determine which aspects of a model's behavior, performance, or impact require attention, action, or disclosure.</p>
+            </div>
+            
+            <form id="assessmentForm">
+                <div class="card">
+                    <h2><i class="fas fa-cube"></i> Model Information</h2>
+                    
+                    <div class="form-group">
+                        <label for="modelName">Model Name <span class="required">*</span></label>
+                        <input type="text" id="modelName" name="modelName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="modelDescription">Model Description <span class="required">*</span></label>
+                        <textarea id="modelDescription" name="modelDescription" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="businessDomain">Business Domain <span class="required">*</span></label>
+                        <select id="businessDomain" name="businessDomain" required>
+                            <option value="">Select a domain</option>
+                            <option value="finance">Finance & Banking</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="retail">Retail & E-commerce</option>
+                            <option value="manufacturing">Manufacturing</option>
+                            <option value="hr">Human Resources</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2><i class="fas fa-chart-line"></i> Impact Assessment</h2>
+                    
+                    <div class="form-group">
+                        <label>Financial Impact: How significant could financial losses be if this model makes errors?
+                            <span class="tooltip">
+                                <i class="fas fa-question-circle"></i>
+                                <span class="tooltiptext">Consider potential direct financial losses from model errors</span>
+                            </span>
+                        </label>
+                        <div class="risk-slider">
+                            <div class="slider-container">
+                                <span>Low</span>
+                                <input type="range" id="financialImpact" name="financialImpact" min="1" max="10" value="5">
+                                <span>High</span>
+                                <span class="slider-value" id="financialValue">5</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Legal/Compliance Risk: What is the potential for regulatory violations or legal issues?
+                            <span class="tooltip">
+                                <i class="fas fa-question-circle"></i>
+                                <span class="tooltiptext">Consider GDPR, industry-specific regulations, etc.</span>
+                            </span>
+                        </label>
+                        <div class="risk-slider">
+                            <div class="slider-container">
+                                <span>Low</span>
+                                <input type="range" id="legalRisk" name="legalRisk" min="1" max="10" value="5">
+                                <span>High</span>
+                                <span class="slider-value" id="legalValue">5</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Reputational Risk: How much could model errors damage organizational reputation?
+                            <span class="tooltip">
+                                <i class="fas fa-question-circle"></i>
+                                <span class="tooltiptext">Consider public perception, brand damage, etc.</span>
+                            </span>
+                        </label>
+                        <div class="risk-slider">
+                            <div class="slider-container">
+                                <span>Low</span>
+                                <input type="range" id="reputationalRisk" name="reputationalRisk" min="1" max="10" value="5">
+                                <span>High</span>
+                                <span class="slider-value" id="reputationalValue">5</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Ethical Risk: What is the potential for bias, discrimination, or social harm?
+                            <span class="tooltip">
+                                <i class="fas fa-question-circle"></i>
+                                <span class="tooltiptext">Consider fairness, bias, and potential societal impact</span>
+                            </span>
+                        </label>
+                        <div class="risk-slider">
+                            <div class="slider-container">
+                                <span>Low</span>
+                                <input type="range" id="ethicalRisk" name="ethicalRisk" min="1" max="10" value="5">
+                                <span>High</span>
+                                <span class="slider-value" id="ethicalValue">5</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Operational Impact: How critical is this model to business operations?
+                            <span class="tooltip">
+                                <i class="fas fa-question-circle"></i>
+                                <span class="tooltiptext">Consider how business operations would be affected if the model failed</span>
+                            </span>
+                        </label>
+                        <div class="risk-slider">
+                            <div class="slider-container">
+                                <span>Low</span>
+                                <input type="range" id="operationalImpact" name="operationalImpact" min="1" max="10" value="5">
+                                <span>High</span>
+                                <span class="slider-value" id="operationalValue">5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2><i class="fas fa-database"></i> Additional Information</h2>
+                    
+                    <div class="form-group">
+                        <label for="dataSensitivity">How sensitive is the data used by this model?</label>
+                        <select id="dataSensitivity" name="dataSensitivity">
+                            <option value="low">Low Sensitivity (Public data)</option>
+                            <option value="medium" selected>Medium Sensitivity (Internal business data)</option>
+                            <option value="high">High Sensitivity (Personal identifiable information)</option>
+                            <option value="very-high">Very High Sensitivity (Health, financial, or other regulated data)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="userInteraction">How do users interact with this model's outputs?</label>
+                        <select id="userInteraction" name="userInteraction">
+                            <option value="informational">Informational only (No direct actions)</option>
+                            <option value="recommendation">Recommendation (Guides human decisions)</option>
+                            <option value="automated">Automated decision-making (Direct actions without human review)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="stakeholders">Who are the primary stakeholders and impacted parties?</label>
+                        <textarea id="stakeholders" name="stakeholders"></textarea>
+                    </div>
+                </div>
+                
+                <button type="button" id="calculateBtn" class="btn"><i class="fas fa-calculator"></i> Calculate Assessment</button>
+            </form>
+        </div>
+        
+        <div class="tab-content" id="generative-tab">
+            <div class="card">
+                <h2><i class="fas fa-info-circle"></i> Generative AI Assessment</h2>
+                <p>This assessment focuses on the unique considerations for Generative AI models, including vendor management, output validation, and intellectual property concerns.</p>
+            </div>
+            
+            <form id="genAiForm">
+                <div class="card">
+                    <h2><i class="fas fa-cube"></i> Generative AI Model Information</h2>
+                    
+                    <div class="form-group">
+                        <label for="genModelName">Model/Application Name <span class="required">*</span></label>
+                        <input type="text" id="genModelName" name="genModelName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="genModelDescription">Application Description <span class="required">*</span></label>
+                        <textarea id="genModelDescription" name="genModelDescription" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="aiVendor">Primary AI Vendor <span class="required">*</span></label>
+                        <input type="text" id="aiVendor" name="aiVendor" required placeholder="e.g., OpenAI, Google, Anthropic">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="purpose">Primary Purpose of Output <span class="required">*</span></label>
+                        <select id="purpose" name="purpose" required>
+                            <option value="">Select purpose...</option>
+                            <option value="ideation">Creative Ideation (Low Validation Needed)</option>
+                            <option value="drafting">Drafting Content (Medium Validation)</option>
+                            <option value="advice">Providing Advice/Information (High Validation)</option>
+                            <option value="automated">Making Automated Decisions (Very High Validation)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2><i class="fas fa-exclamation-triangle"></i> Generative AI Risk Assessment</h2>
+                    
+                    <div class="form-group">
+                        <label>Vendor Reliance: How critical is the continuous availability of the vendor's API?
+                            <span class="tooltip">
+                                <i class="fas fa-question-circle"></i>
+                                <span class="tooltiptext">Consider your dependency on the vendor's stability, pricing, and API availability</span>
+                            </span>
+                        </label>
+                        <div class="risk-slider">
+                            <div class="slider-container">
+                                <span>Low</span>
+                                <input type="range" id="vendorReliance" name="vendorReliance" min="1" max="10" value="5">
+                                <span>High</span>
+                                <span class="slider-value" id="vendorRelianceValue">5</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Hallucination Risk: What is the potential impact of factually incorrect outputs?
+                            <span class="tooltip">
+                                <i class="fas fa-question-circle"></i>
+                                <span class="tooltiptext">Consider the consequences of the model generating false or misleading information</span>
+                            </span>
+                        </label>
+                        <div class="risk-slider">
+                            <div class="slider-container">
+                                <span>Low</span>
+                                <input type="range" id="hallucinationRisk" name="hallucinationRisk" min="1" max="10" value="5">
+                                <span>High</span>
+                                <span class="slider-value" id="hallucinationValue">5</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>IP & Copyright Risk: Potential for intellectual property or copyright issues?
+                            <span class="tooltip">
+                                <i class="fas fa-question-circle"></i>
+                                <span class="tooltiptext">Consider if generated content might infringe on existing copyrights</span>
+                            </span>
+                        </label>
+                        <div class="risk-slider">
+                            <div class="slider-container">
+                                <span>Low</span>
+                                <input type="range" id="ipRisk" name="ipRisk" min="1" max="10" value="5">
+                                <span>High</span>
+                                <span class="slider-value" id="ipValue">5</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Content Safety Risk: Potential for generating harmful or unsafe content?
+                            <span class="tooltip">
+                                <i class="fas fa-question-circle"></i>
+                                <span class="tooltiptext">Consider the potential for generating biased, toxic, or harmful content</span>
+                            </span>
+                        </label>
+                        <div class="risk-slider">
+                            <div class="slider-container">
+                                <span>Low</span>
+                                <input type="range" id="safetyRisk" name="safetyRisk" min="1" max="10" value="5">
+                                <span>High</span>
+                                <span class="slider-value" id="safetyValue">5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2><i class="fas fa-tasks"></i> Generative AI Specifics</h2>
+                    
+                    <div class="form-group">
+                        <label for="outputValidation">What output validation strategies will you implement?</label>
+                        <select id="outputValidation" name="outputValidation">
+                            <option value="none">No validation</option>
+                            <option value="automated">Automated validation</option>
+                            <option value="human">Human-in-the-loop review</option>
+                            <option value="multi">Multi-layered validation approach</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="vendorSla">Do you have an SLA with your AI vendor?</label>
+                        <select id="vendorSla" name="vendorSla">
+                            <option value="no">No SLA</option>
+                            <option value="basic">Basic SLA</option>
+                            <option value="comprehensive">Comprehensive SLA with guarantees</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="fallbackStrategy">What is your fallback strategy if the AI service is unavailable?</label>
+                        <textarea id="fallbackStrategy" name="fallbackStrategy"></textarea>
+                    </div>
+                </div>
+                
+                <button type="button" id="calculateGenBtn" class="btn"><i class="fas fa-calculator"></i> Calculate Generative AI Assessment</button>
+            </form>
+        </div>
+        
+        <section id="results" class="results">
+            <h2><i class="fas fa-chart-pie"></i> Assessment Results</h2>
+            
+            <div class="score-label">Overall Materiality Score</div>
+            <div class="score-display" id="scoreDisplay">0.0</div>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            
+            <div id="riskLevel">
+                <!-- Risk level will be inserted here -->
+            </div>
+            
+            <h3><i class="fas fa-clipboard-list"></i> Recommended Actions</h3>
+            <ul id="recommendedActions" class="actions-list">
+                <!-- Recommended actions will be inserted here -->
+            </ul>
+            
+            <h3><i class="fas fa-road"></i> Next Steps</h3>
+            <p id="nextSteps"></p>
+            
+            <button type="button" id="resetBtn" class="btn btn-reset"><i class="fas fa-redo"></i> Start New Assessment</button>
+        </section>
+    </div>
+    
+    <footer>
+        <p>This tool is for informational purposes only. Organizations should consult with legal and compliance teams for formal assessments.</p>
+        <p>© 2023 AI Materiality Assessment Tool</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up tabs
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    // Deactivate all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(tc => tc.classList.remove('active'));
+                    
+                    // Activate current tab
+                    tab.classList.add('active');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
+            });
+            
+            // Set up slider value displays for predictive assessment
+            const sliders = document.querySelectorAll('input[type="range"]');
+            sliders.forEach(slider => {
+                const valueDisplay = document.getElementById(slider.id + 'Value');
+                if (valueDisplay) {
+                    valueDisplay.textContent = slider.value;
+                    
+                    slider.addEventListener('input', function() {
+                        valueDisplay.textContent = this.value;
+                    });
+                }
+            });
+            
+            // Calculate button handlers
+            document.getElementById('calculateBtn').addEventListener('click', function() {
+                if (!validateForm('assessmentForm')) {
+                    alert('Please fill out all required fields.');
+                    return;
+                }
+                
+                calculatePredictiveResults();
+            });
+            
+            document.getElementById('calculateGenBtn').addEventListener('click', function() {
+                if (!validateForm('genAiForm')) {
+                    alert('Please fill out all required fields.');
+                    return;
+                }
+                
+                calculateGenerativeResults();
+            });
+            
+            // Reset button handler
+            document.getElementById('resetBtn').addEventListener('click', function() {
+                document.getElementById('assessmentForm').reset();
+                document.getElementById('genAiForm').reset();
+                
+                // Reset sliders to default values
+                document.querySelectorAll('input[type="range"]').forEach(slider => {
+                    slider.value = 5;
+                    const valueDisplay = document.getElementById(slider.id + 'Value');
+                    if (valueDisplay) valueDisplay.textContent = '5';
+                });
+                
+                document.getElementById('results').style.display = 'none';
+                window.scrollTo(0, 0);
+            });
+            
+            function validateForm(formId) {
+                const form = document.getElementById(formId);
+                const requiredFields = form.querySelectorAll('[required]');
+                
+                for (let field of requiredFields) {
+                    if (!field.value.trim()) {
+                        field.focus();
+                        return false;
+                    }
+                }
+                
+                return true;
+            }
+            
+            function calculatePredictiveResults() {
+                // Get values from sliders
+                const financialImpact = parseInt(document.getElementById('financialImpact').value);
+                const legalRisk = parseInt(document.getElementById('legalRisk').value);
+                const reputationalRisk = parseInt(document.getElementById('reputationalRisk').value);
+                const ethicalRisk = parseInt(document.getElementById('ethicalRisk').value);
+                const operationalImpact = parseInt(document.getElementById('operationalImpact').value);
+                
+                // Calculate average risk score
+                const totalScore = financialImpact + legalRisk + reputationalRisk + ethicalRisk + operationalImpact;
+                const averageScore = totalScore / 5;
+                
+                displayResults(averageScore, 'predictive');
+            }
+            
+            function calculateGenerativeResults() {
+                // Get values from sliders
+                const vendorReliance = parseInt(document.getElementById('vendorReliance').value);
+                const hallucinationRisk = parseInt(document.getElementById('hallucinationRisk').value);
+                const ipRisk = parseInt(document.getElementById('ipRisk').value);
+                const safetyRisk = parseInt(document.getElementById('safetyRisk').value);
+                
+                // Calculate average risk score
+                const totalScore = vendorReliance + hallucinationRisk + ipRisk + safetyRisk;
+                const averageScore = totalScore / 4;
+                
+                displayResults(averageScore, 'generative');
+            }
+            
+            function displayResults(averageScore, type) {
+                // Determine risk level
+                let riskLevel, riskClass, riskDescription;
+                if (averageScore <= 3.5) {
+                    riskLevel = "Low Risk";
+                    riskClass = "low-risk";
+                    riskDescription = "This model presents minimal material risks. Standard monitoring and governance procedures are sufficient.";
+                } else if (averageScore <= 7) {
+                    riskLevel = "Medium Risk";
+                    riskClass = "medium-risk";
+                    riskDescription = "This model presents moderate material risks that require specific mitigation strategies and enhanced monitoring.";
+                } else {
+                    riskLevel = "High Risk";
+                    riskClass = "high-risk";
+                    riskDescription = "This model presents significant material risks that require immediate attention and comprehensive mitigation strategies.";
+                }
+                
+                // Display score and risk level
+                document.getElementById('scoreDisplay').textContent = averageScore.toFixed(1);
+                document.getElementById('riskLevel').innerHTML = `
+                    <p><strong>Materiality Level:</strong> <span class="risk-indicator ${riskClass}">${riskLevel}</span></p>
+                    <p>${riskDescription}</p>
+                `;
+                
+                // Update progress bar
+                const progressBar = document.getElementById('progressBar');
+                progressBar.style.width = `${averageScore * 10}%`;
+                progressBar.style.background = getColorForScore(averageScore);
+                
+                // Generate recommendations based on risk level and type
+                const actionsList = document.getElementById('recommendedActions');
+                actionsList.innerHTML = '';
+                
+                const recommendations = getRecommendations(averageScore, type);
+                
+                recommendations.forEach(rec => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<i class="fas fa-check-circle"></i> ${rec}`;
+                    actionsList.appendChild(li);
+                });
+                
+                // Set next steps
+                document.getElementById('nextSteps').textContent = getNextSteps(riskLevel, type);
+                
+                // Show results
+                document.getElementById('results').style.display = 'block';
+                
+                // Scroll to results
+                document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            function getColorForScore(score) {
+                if (score <= 3.5) return var(--success);
+                if (score <= 7) return var(--warning);
+                return var(--danger);
+            }
+            
+            function getRecommendations(avgScore, type) {
+                const recommendations = [];
+                
+                if (type === 'predictive') {
+                    // General recommendations based on overall score
+                    if (avgScore >= 8) {
+                        recommendations.push("Immediate review and mitigation plan required before deployment");
+                        recommendations.push("Executive leadership must approve deployment");
+                        recommendations.push("Implement extensive monitoring and alerting systems");
+                    } else if (avgScore >= 5) {
+                        recommendations.push("Develop mitigation strategies for high-risk areas");
+                        recommendations.push("Senior management review required before deployment");
+                        recommendations.push("Establish regular monitoring and review schedule");
+                    } else {
+                        recommendations.push("Proceed with standard development and deployment processes");
+                        recommendations.push("Implement baseline monitoring");
+                    }
+                    
+                    // Specific recommendations based on individual risk factors
+                    const financialImpact = parseInt(document.getElementById('financialImpact').value);
+                    const legalRisk = parseInt(document.getElementById('legalRisk').value);
+                    const ethicalRisk = parseInt(document.getElementById('ethicalRisk').value);
+                    const operationalImpact = parseInt(document.getElementById('operationalImpact').value);
+                    
+                    if (financialImpact >= 8) {
+                        recommendations.push("Implement financial safeguards and manual review for high-value decisions");
+                    }
+                    
+                    if (legalRisk >= 7) {
+                        recommendations.push("Legal team must review model compliance with relevant regulations");
+                    }
+                    
+                    if (ethicalRisk >= 7) {
+                        recommendations.push("Conduct comprehensive bias audit with diverse test cases");
+                        recommendations.push("Implement fairness constraints in model training");
+                    }
+                    
+                    if (operationalImpact >= 8) {
+                        recommendations.push("Create fallback mechanisms and redundancy plans");
+                    }
+                    
+                    // Data sensitivity considerations
+                    const dataSensitivity = document.getElementById('dataSensitivity').value;
+                    if (dataSensitivity === 'high' || dataSensitivity === 'very-high') {
+                        recommendations.push("Implement strong data governance and access controls");
+                    }
+                } else {
+                    // Generative AI recommendations
+                    if (avgScore >= 8) {
+                        recommendations.push("Implement rigorous output validation and human review processes");
+                        recommendations.push("Establish comprehensive content safety protocols");
+                        recommendations.push("Develop contingency plans for vendor API failures");
+                    } else if (avgScore >= 5) {
+                        recommendations.push("Implement automated validation checks for generated content");
+                        recommendations.push("Review vendor SLAs and terms of service carefully");
+                        recommendations.push("Develop clear guidelines for appropriate use cases");
+                    } else {
+                        recommendations.push("Proceed with standard development processes for generative AI");
+                        recommendations.push("Implement basic content filtering");
+                    }
+                    
+                    // Specific recommendations for generative AI
+                    const vendorReliance = parseInt(document.getElementById('vendorReliance').value);
+                    const hallucinationRisk = parseInt(document.getElementById('hallucinationRisk').value);
+                    const purpose = document.getElementById('purpose').value;
+                    
+                    if (vendorReliance >= 7) {
+                        recommendations.push("Develop a contingency plan for vendor API failure");
+                        recommendations.push("Review contract and SLA with vendor for uptime guarantees");
+                    }
+                    
+                    if (hallucinationRisk >= 5) {
+                        recommendations.push("Implement output validation framework");
+                    }
+                    if (hallucinationRisk >= 8) {
+                        recommendations.push("Mandate human-in-the-loop review for all outputs");
+                    }
+                    
+                    if (purpose === 'advice' || purpose === 'automated') {
+                        recommendations.push("Implement explicit disclaimers about output verification");
+                    }
+                    if (purpose === 'automated') {
+                        recommendations.push("Implement confidence thresholds and default to human review for low-confidence outputs");
+                    }
+                }
+                
+                return recommendations;
+            }
+            
+            function getNextSteps(riskLevel, type) {
+                if (riskLevel === "High Risk") {
+                    return `Schedule an immediate meeting with the AI Governance Board to review findings and develop a risk mitigation plan. ${type === 'generative' ? 'Ensure vendor contracts and compliance issues are addressed.' : 'Do not proceed with deployment until approved.'}`;
+                } else if (riskLevel === "Medium Risk") {
+                    return `Share these results with your manager and relevant stakeholders. Develop a plan to address the recommendations before the next project phase. ${type === 'generative' ? 'Review vendor terms and ensure proper output validation strategies are in place.' : ''}`;
+                } else {
+                    return `Document this assessment and proceed with standard development processes. Reassess if the model context or application changes significantly. ${type === 'generative' ? 'Monitor vendor performance and output quality regularly.' : ''}`;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
