@@ -20,7 +20,7 @@ A factor is considered **material** if its omission, inaccuracy, or bias could:
 * Cause direct or indirect financial loss to the company or its users.
 * Cause physical, psychological, reputational, or social harm to individuals or groups.
 * Result in non-compliance with laws, regulations, or internal policies.
-* Significantly damage the reputation of **[Your Company Name]**.
+* Significantly damage the reputation of Company.
 
 *Materiality is context-dependent; a 1% error rate may be immaterial for a movie recommendation model but highly material for a cancer diagnosis model.*
 
@@ -235,6 +235,8 @@ G5.2. What is the fallback or contingency plan? (e.g., switching to a different 
     * **Owner:** David (Data Scientist).
     * **Deadline:** Ongoing.
 * **Outcome:** The AI Governance Board **Approves the model for deployment with conditions**. Deployment is contingent on the implementation of the monitoring dashboard and the human-in-the-loop process. The quarterly re-validation is added as a standing operational procedure.
+
+## [Sample Assesment ](https://dhaneshdlal.github.io/MLProjects/MaterialityAssesmentExample.html)
 
 
 Disclaimer: This document is a template provided for informational purposes only and does not constitute legal advice. Organizations should consult with their legal and compliance teams to tailor this framework to their specific needs and regulatory environment.
