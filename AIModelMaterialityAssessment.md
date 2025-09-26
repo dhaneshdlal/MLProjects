@@ -186,8 +186,11 @@ G5.2. What is the fallback or contingency plan? (e.g., switching to a different 
 ### **Scenario**
 
 **Model:** "CreditScore-v3" - an ML model that predicts a loan applicant's creditworthiness.
+
 **Function:** Used by loan officers to approve or deny personal loan applications. The model's output is a score from 0-100, and a score below 70 results in an automated denial.
+
 **Users:** Loan officers, individual applicants.
+
 **Impacted Groups:** Loan applicants, particularly those from different socioeconomic and demographic backgrounds.
 
 ### **Phase 1: Scoping & Preparation**
