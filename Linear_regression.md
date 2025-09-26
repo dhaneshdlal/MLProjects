@@ -71,6 +71,7 @@ print("Calculated percentage is" + str(percentage_predicted))
 
 `Calculated percentage is[60.]
 `
+We didn’t give it specific logic or equations as input rather just values in the data set; it learned from the examples in the training data. Let’s use this model to make predictions with new input data.
 
 Hope you could follow the steps. To get more understanding , I encourage you to experiment and try something new with this dataset. Finding the average is another example you can explore to gain a different perspective on the data.
 
