@@ -48,4 +48,6 @@ We’ll explore a straight forward model . No complex algorithms, just basic ste
 
 * **[Logistic Regression](Logistic_regression.md)**
 
+## Model Materiality Assesment 
 
+https://dhaneshdlal.github.io/MLProjects/MaterialityAssesmentExample.html
