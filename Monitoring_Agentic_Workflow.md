@@ -7,7 +7,7 @@ As Agentic AI systems transition to production, ensuring reliability and trust b
 While prompts and ground truth data provide some control over LLM behavior, unexpected outputs still occur. In multi-agent systems, the critical question becomes: which agent caused the deviation? Without proper monitoring, the entire workflow operates as a black box, making debugging and auditing nearly impossible.
 
 ## Essential Monitoring Data Points
-To enable effective governance, capture these five key elements for every agent execution:
+To enable effective governance, capture these elements at a minimum for every agent execution. This approach is extensible to monitor integrations with tools, external agents, and other systems:
 
 - **Input/Output Tracking**: Record exact prompts and raw LLM responses to identify where undesired outputs originate
 - **Token Monitoring**: Track input/output tokens for cost management and performance benchmarking
